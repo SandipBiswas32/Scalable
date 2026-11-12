@@ -1,0 +1,21 @@
+name: Build mod
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Unzip and build
+        run: |
+          unzip scalable-main.zip
+          cd scalable-main
+          chmod +x gradlew
+          ./gradlew build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mod-jar
+          path: scalable-main/build/libs/*.jar
